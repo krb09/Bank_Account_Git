@@ -1,0 +1,4 @@
+AMZN	2
+GOOG	1
+GS	3
+MSFT	1
