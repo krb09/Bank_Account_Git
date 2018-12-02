@@ -9,18 +9,22 @@ class ListNode: public Account
 {
 	friend class List;
 public:
-	ListNode(string=" ", int = 0, ListNode* = nullptr, ListNode* = nullptr);
+	ListNode(string=" ", double = 0,ListNode* = nullptr, ListNode* = nullptr);
 	void setSym(string);
 	string getSym() const;
-	void setData(int);
-	int getData() const;
+	void setData(double);
+	double getData() const;
+	void setpps(double);
+	double getpps() const;
 	void setnextPtr(ListNode*);
 	ListNode* getnextPtr();
 	void setprevPtr(ListNode*);
 	ListNode* getprevPtr();
+	double gettotalvalue();
 private:
 	string sym;
-	int data;
+	double data;
+	double PPS;						//added a new field, price per share
 	ListNode *nextptr;
 	ListNode *prevptr;
 };

@@ -4,8 +4,8 @@
 #define ACCOUNT_KARTIK_H
 class Account {
 public:
-	Account();				//confusion in this !*************
-	void setCashBalance();
+	Account();				
+	void setCashBalance();				
 	double getCashBalance() const;
 	void Display_CashBalance() const;
 	void Update_CashBalance(double);

@@ -4,7 +4,7 @@
 #include<string>
 using namespace std;
 
-ListNode::ListNode(string symbol, int a, ListNode* b, ListNode* c)
+ListNode::ListNode(string symbol, double a, ListNode* b, ListNode* c)
 {
 	setSym(symbol);
 	setData(a);
@@ -20,13 +20,22 @@ string ListNode::getSym() const
 	return sym;
 }
 //----------------------------------------------------//
-void ListNode::setData(int a)
+void ListNode::setData(double a)
 {
 	data = a;
 }
-int ListNode::getData() const
+double ListNode::getData() const
 {
 	return data;
+}
+//----------------------------------------------------//
+void ListNode::setpps(double a)
+{
+	PPS = a;
+}
+double ListNode::getpps() const
+{
+	return PPS;
 }
 //---------------------------------------------------//
 void ListNode::setnextPtr(ListNode* ptr)
@@ -45,5 +54,10 @@ void ListNode::setprevPtr(ListNode* ptr)
 ListNode* ListNode::getprevPtr()
 {
 	return prevptr;
+}
+//---------------------------------------------------//
+double ListNode::gettotalvalue()
+{
+	return (this->PPS)*(this->data);
 }
 //---------------------------------------------------//

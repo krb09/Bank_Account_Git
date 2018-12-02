@@ -2,23 +2,28 @@
 #include "Account_Kartik.h"
 #pragma once
 #include "Stock_portfolio_ListNode_Kartik.h"
+#include<time.h>
 #ifndef LIST_H
 #define LIST_H
 class List: public Account
 {
 public:
 	List(ListNode* = nullptr, ListNode* = nullptr);
-	void insertatfront(string ,const int&);
-	void removefromfront();
-	void insertatlast(string,const int&);
-	void removefromlast();
-	void print_stock_portfolio();
 	bool IsEmpty();
+	void print_stock_portfolio();
 	void buy_stock(string,double,double);				//enter the share symbol and the number of share to be bought
+	void sell_stock(string, double,double);
 	double return_stockprice(string);
+	double return_numberofshares_from_LinkedList(string);
+	double return_share_per_price_from_LinkedList(string);
 	void printStockPrice(string);
 	void Copy_portfolio();
-	void sell_stock(string, double, double);
+	string generate_random_file();
+	void bubble_sort();
+	void stock_transaction_history(int,string,int,double,double);  //(1:buy,0:sell;sym;number;share_price;totalvalue)
+	char* returncurrenttime();
+	int return_number_of_companies();
+
 private:
 	ListNode *firstptr;
 	ListNode *lastptr;

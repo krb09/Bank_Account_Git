@@ -5,10 +5,13 @@
 #include<fstream>
 #include<string>
 using namespace std;
+
+//X--------------------------------------------------------------------------------------------------------------------------------------------XX
 Account::Account()
 {
 	setCashBalance();
 }
+//X--------------------------------------------------------------------------------------------------------------------------------------------XX
 void Account::setCashBalance()
 {
 	double CB=-1;								//temporary variable to store Current balance
@@ -26,6 +29,8 @@ void Account::setCashBalance()
 	read_CB.close();
 	CashBalance = CB;
 }
+//X---------------------------------------------------------------------------------------------------------------------------------------------XX
+
 void Account::Update_CashBalance(double CCB)		//update current cashbalance
 {
 	string item;
@@ -43,3 +48,4 @@ void Account::Display_CashBalance() const
 {
 	cout << "Current CashBalance: $" << getCashBalance()<<endl;
 }
+//X--------------------------------------------------------------------------------------------------------------------------------------------XX
