@@ -516,8 +516,8 @@ void List :: ConnecttoMatlab()
 		store_TPV.push_back(TPV);
 		store_time.push_back(st);
 	}
-	int time_Size = store_time.size();
-	int value_Size = store_TPV.size();
+	size_t time_Size = store_time.size();
+	size_t value_Size = store_TPV.size();
 	double *time_Array = new double[time_Size];
 	double *value_Array = new double[value_Size];
 
@@ -553,12 +553,12 @@ void List::update_transaction_on_account_stockinfo(int ch, double money)
 		write_trans.open("Bank_Account_History.txt", ios::app);			//append and add at the end
 		if (choice == 1)						//share was bought
 		{
-			write_trans << "BUYShare" << "	" << money << "		" << returncurrenttime() << "	" << getCashBalance() << endl;
+			write_trans << "BUYShare" << "	" << money << "		"<< getCashBalance()<<"		" << returncurrenttime() << endl;
 			write_trans.close();
 		}
 		else
 		{
-			write_trans << "SELLShare" << "	" << money << "		" << returncurrenttime()<< "	" << getCashBalance() << endl;
+			write_trans << "SELLShare" << "	" << money << "		" << getCashBalance() << "		" << returncurrenttime() << endl;
 			write_trans.close();
 		}
 }

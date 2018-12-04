@@ -1,2 +1,13 @@
-Event		Amount		Date&Time			Balance
+Event		Amount		Balance		Date&Time
+BUYShare	579.964		9420.04		Tue Dec  4 12:00:08 2018
+
+BUYShare	81.9		9338.14		Tue Dec  4 12:00:38 2018
+
+SELLShare	81.9		9420.04		Tue Dec  4 12:01:07 2018
+
+Deposit		500		9920.04		Tue Dec  4 12:01:28 2018
+
+Withdraw	20.04		9900		Tue Dec  4 12:01:41 2018
+
+SELLShare	568.964		10469		Tue Dec  4 12:02:28 2018
 

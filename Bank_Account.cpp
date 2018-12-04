@@ -9,11 +9,11 @@ using namespace std;
 
 Bank_Account::Bank_Account()
 {
-	Total_Cash_Balance = getCashBalance();
+	Total_Cash_Balance = getCashBalance();							//this is actually a unnecessary part.
 }
 double Bank_Account::get_Bank_Balance()
 {
-	return Total_Cash_Balance;
+	return getCashBalance();
 }
 void Bank_Account::view_account_balance()
 {
@@ -21,19 +21,17 @@ void Bank_Account::view_account_balance()
 }
 void Bank_Account::deposit_money(double deposit)
 {
-	cout << "The current account balance is:$" << getCashBalance();
 	setCashBalance_new(getCashBalance() + deposit);
 	Update_CashBalance_into_txt(CashBalance);
-	cout<<"After deposit, the current account balance is:$"<< getCashBalance();
+	cout<<"After deposit, the current account balance is:$"<< getCashBalance()<<endl;
 	update_transaction_on_account(1, deposit);
 
 }
 void Bank_Account::withdraw_money(double money)
 {
-	cout << "The current account balance is:$" << getCashBalance();
 	setCashBalance_new(getCashBalance() - money);
 	Update_CashBalance_into_txt(CashBalance);
-	cout << "After withdrawal, the current account balance is:$" << getCashBalance();
+	cout << "After withdrawal, the current account balance is:$" << getCashBalance()<<endl;
 	update_transaction_on_account(0, money);
 
 }
@@ -51,12 +49,12 @@ void Bank_Account::update_transaction_on_account(int choice,double money)
 		write_trans.open("Bank_Account_History.txt", ios::app);			//append and add at the end
 		if (choice == 1)						//share was bought
 		{
-			write_trans << "Deposit" << "	" << money << "		" <<returncurrenttime_Bank_Account()<< "	" << get_Bank_Balance() << endl;
+			write_trans << "Deposit" << "		" << money << "		"<<get_Bank_Balance()<< "		"<<returncurrenttime_Bank_Account()<< endl;
 			write_trans.close();
 		}
 		else
 		{
-			write_trans << "Withdraw" << "	" << money << "		" <<returncurrenttime_Bank_Account()<< "	" << get_Bank_Balance() << endl;
+			write_trans << "Withdraw" << "	" << money << "		" << get_Bank_Balance() << "		" << returncurrenttime_Bank_Account() << endl;
 			write_trans.close();
 
 		}

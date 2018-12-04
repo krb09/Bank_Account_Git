@@ -7,8 +7,8 @@ public:
 	Account();				
 	void setCashBalance_from_txt();		
 	void setCashBalance_new(double);
-	double getCashBalance() const;
-	void Display_CashBalance() const;
+	double getCashBalance();
+	void Display_CashBalance();
 	void Update_CashBalance_into_txt(double);
 protected:
 	double CashBalance;

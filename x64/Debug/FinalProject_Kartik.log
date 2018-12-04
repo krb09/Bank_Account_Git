@@ -1,2 +1,10 @@
-﻿  FinalProject_Kartik.cpp
+﻿  pch.cpp
+  Account_Kartik.cpp
+  Bank_Account.cpp
+  FinalProject_Kartik.cpp
+  Stock_portfolio_List.cpp
+  Stock_portfolio_ListNode_Kartik.cpp
+  Generating Code...
+c:\users\kartik rattan\source\repos\finalproject_kartik\finalproject_kartik\stock_portfolio_list.cpp(412): warning C4715: 'List::return_numberofshares_from_LinkedList': not all control paths return a value
+c:\users\kartik rattan\source\repos\finalproject_kartik\finalproject_kartik\stock_portfolio_list.cpp(429): warning C4715: 'List::return_share_per_price_from_LinkedList': not all control paths return a value
   FinalProject_Kartik.vcxproj -> C:\Users\Kartik Rattan\source\repos\FinalProject_Kartik\x64\Debug\FinalProject_Kartik.exe

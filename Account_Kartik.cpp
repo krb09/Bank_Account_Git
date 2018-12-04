@@ -47,11 +47,11 @@ void Account::Update_CashBalance_into_txt(double CCB)		//update current cashbala
 	write_ccb.close();
 	this->setCashBalance_from_txt();								//after you update, set the cashbalance for the object
 }
-double Account::getCashBalance() const
+double Account::getCashBalance() 
 {
 	return CashBalance;
 }
-void Account::Display_CashBalance() const
+void Account::Display_CashBalance()
 {
 	cout << "Current CashBalance: $" << getCashBalance()<<endl;
 }
