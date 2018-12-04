@@ -1,10 +1,17 @@
 #include "pch.h"
 #define _CRT_SECURE_NO_WARNINGS
+#include <yvals.h>
+#if (_MSC_VER >= 1600)
+#define __STDC_UTF_16__
+#endif
+#include "mex.h" 
+#include<engine.h>
+//XX------------------------------------------------------------------------------------------------------------------------XX
+//XX------------------------------------------------------------------------------------------------------------------------XX
+#include <vector>     //to tread the the values for plotting in matlab
 #include <iostream>
 #include <fstream>			// for input/output from the text files
 #include<iomanip>
-
-
 using namespace std;
 #include "Stock_portfolio_List.h"
 #include "Stock_portfolio_ListNode_Kartik.h"
@@ -23,7 +30,7 @@ void List::print_stock_portfolio()
 	ListNode *tempptr = firstptr;
 	if (IsEmpty())
 	{
-		cout << "The list is empty";
+		cout << "The portfolio is currently empty." << endl;
 	}
 	else
 	{
@@ -53,7 +60,7 @@ bool List::IsEmpty()
 }
 //XXXXX---------------------------------------------------------------------------------------------------------------------------------XXXXXXX
 
-ListNode* List::getNewNode(string sym,int value)
+ListNode* List::getNewNode(string sym,double value)
 {
 	ListNode *newobj = new ListNode(sym,value);
 	return newobj;
@@ -108,6 +115,7 @@ void List::buy_stock(string sym1,double num,double min_amt)
 {
 	double curr_value = 0;								//find the sym and the corresponding value. ***STEP 1***
 	string file = generate_random_file();
+	cout << "BUY:"<<file << endl;
 	ifstream read_share;
 	string item;
 	int flag = 0;
@@ -138,7 +146,6 @@ void List::buy_stock(string sym1,double num,double min_amt)
 				searchsym->setData(searchsym->getData() + num);				//just update th value of number of shares
 				searchsymflag = 1;											//found a value
 				stock_transaction_history(1, sym1, num, searchsym->PPS, (searchsym->gettotalvalue())/searchsym->getData()); //add the transaction, divide by data because per share batani hai, its telling the total
-
 			}
 			searchsym = searchsym->nextptr;
 		}
@@ -179,8 +186,10 @@ void List::buy_stock(string sym1,double num,double min_amt)
 			read_share_temp.close();
 		}
 		this->bubble_sort();										//Sort *****STEP 4******
-		Update_CashBalance(CashBalance - (curr_value*num));			//update the cashbalance if succesfull transaction happens
+		Update_CashBalance_into_txt(CashBalance - (curr_value*num));			//update the cashbalance if succesfull transaction happens
 		Copy_portfolio();											//to copy the current portfolio to the file
+		update_transaction_on_account_stockinfo(1, num*return_share_per_price_from_LinkedList(sym1)); //update in bank account, neccessary to be after the cashbalance has been updated
+
 	}
 	else if (num*min_amt > getCashBalance())
 	{
@@ -226,9 +235,11 @@ void List::sell_stock(string sym, double num,double amount_offered)
 		double current_number_shares = tempptr->getData();
 		if (current_number_shares > num)				//if you have more shares than you want to sell
 		{
+			stock_transaction_history(0, sym, num, tempptr->PPS, tempptr->gettotalvalue());		//add the transaction
 			tempptr->setData(current_number_shares - num);
 			ListNode *tempptr1 = firstptr;							//Update the pps of the current portfolio with this new file. 
 			string file = generate_random_file();
+			cout << "Sell:"<<file << endl;
 			while (tempptr1 != nullptr)
 			{
 				double curr_value_temp = 0;
@@ -248,13 +259,17 @@ void List::sell_stock(string sym, double num,double amount_offered)
 				read_share_temp.close();
 			}
 			bubble_sort();
-			Update_CashBalance(getCashBalance() + (current_number_shares * return_share_per_price_from_LinkedList(sym)));
+			Update_CashBalance_into_txt(getCashBalance() + (num * return_share_per_price_from_LinkedList(sym)));
+			update_transaction_on_account_stockinfo(0, num*return_share_per_price_from_LinkedList(sym)); //update in bank account, neccessary to be after the cashbalance has been updated
+
 			Copy_portfolio();											//to copy the current portfolio to the file
 
 		}
 		else if (current_number_shares == num)			//if exactly the amount you want to sell
 		{
-			Update_CashBalance(getCashBalance() + (num * return_share_per_price_from_LinkedList(sym)));		//update it otherwise it will be lost
+			stock_transaction_history(0, sym, num, tempptr->PPS, tempptr->gettotalvalue());		//add the transaction
+			Update_CashBalance_into_txt(getCashBalance() + (num * return_share_per_price_from_LinkedList(sym)));		//update it otherwise it will be lost
+			update_transaction_on_account_stockinfo(0, num*return_share_per_price_from_LinkedList(sym)); //update in bank account, neccessary to be after the cashbalance has been updated
 			tempptr->setData(0);
 			bubble_sort();			//the zero number of shares stock should always be at the last********
 			if (return_number_of_companies() == 1)
@@ -308,7 +323,6 @@ void List::updateList()						//every time the system makes a list, a new file is
 	while (read>>item>>num>>price_per_share)
 	{
 		ListNode *newptr = getNewNode(item, num);							//SET THE OTHER TWO
-		cout << price_per_share<<endl;
 		newptr->setpps(price_per_share);									//SET PPS
 		if (IsEmpty())																//if this is the first purchase
 		{
@@ -327,8 +341,8 @@ void List::updateList()						//every time the system makes a list, a new file is
 string List::generate_random_file()
 {
 	srand(static_cast<unsigned int>(time(0)));                              //Generating the seed value according to the time in the systems in  seconds
-	string s[] = { "Result_1.txt","Result_2.txt" };
-	string file = s[0 + rand() % 2];
+	string s[] = { "Result_1.txt","Result_2.txt","Result_3.txt","Result_4.txt" };
+	string file = s[0 + rand() % 3];
 	return file;
 }
 //XXXXX---------------------------------------------------------------------------------------------------------------------------------XXXXXXX
@@ -394,7 +408,7 @@ double List::return_numberofshares_from_LinkedList(string Sym1)
 		tempptr = tempptr->nextptr;
 	}
 	if (flag == 0)
-		return 0;
+		return 0.0;
 }
 //XX-------------------------------------------------------------------------------------------------------------------------------------------XX
 double List::return_share_per_price_from_LinkedList(string Sym1)
@@ -411,10 +425,10 @@ double List::return_share_per_price_from_LinkedList(string Sym1)
 		tempptr = tempptr->nextptr;
 	}
 	if (flag == 0)
-		return 0;
+		return 0.0;
 }
 //XX-------------------------------------------------------------------------------------------------------------------------------------------XX
-void List::stock_transaction_history(int check, string sym, int num, double pricepstock, double total_value)
+void List::stock_transaction_history(int check, string sym, double num, double pricepstock, double total_value)
 {
 	ofstream write_trans;
 	write_trans.open("stock_transaction_history.txt",ios::app);			//append and add at the end
@@ -425,19 +439,28 @@ void List::stock_transaction_history(int check, string sym, int num, double pric
 	}
 	else
 	{
-		write_trans << "Sell" << "	" << sym << "	" << num << "	" << pricepstock << "	" << total_value<<"	"<<returncurrenttime()<<endl;
+		write_trans << "Sell" << "	" << sym << "		" << num << "	" << pricepstock << "		" << total_value<<"		"<<returncurrenttime()<<endl;
 		write_trans.close();
 
 	}
 }
 //XX-------------------------------------------------------------------------------------------------------------------------------------------XX
-char *List::returncurrenttime()
+char* List::returncurrenttime()
 {
 	time_t seconds;
 	seconds = time(NULL);
 	tm * timeinfo;
 	timeinfo = localtime(&seconds);
 	return asctime(timeinfo);
+
+}
+//XX-------------------------------------------------------------------------------------------------------------------------------------------XX
+time_t List::returncurrenttime_in_seconds()
+{
+	time_t time_constant = 1543806880;			//defined this as the start of time. of comparable value
+	time_t seconds;
+	seconds = time(NULL);
+	return seconds-time_constant;
 }
 //XX-------------------------------------------------------------------------------------------------------------------------------------------XX
 int List::return_number_of_companies()
@@ -450,4 +473,104 @@ int List::return_number_of_companies()
 		tempptr = tempptr->nextptr;
 	}
 	return count;
+}
+//XX-------------------------------------------------------------------------------------------------------------------------------------------XX
+void List::totalPortfolioValue()
+{
+	double totalPV = 0;
+	ListNode *tempptr = firstptr;
+	while (tempptr != nullptr)
+	{
+		totalPV = totalPV + tempptr->gettotalvalue();
+		tempptr = tempptr->nextptr;
+	}
+	ofstream write_TPV;
+	write_TPV.open("Total_portfolio_Value.txt",ios::app);
+	write_TPV << setw(22) << totalPV + getCashBalance() <<"	"<<returncurrenttime() << endl;
+	write_TPV.close();
+	//--------forMatlab
+	write_TPV.open("Total_portfolio_Value_in_Sec_for_Matlab.txt", ios::app);
+	write_TPV << setw(22) << totalPV + getCashBalance() << "	" << returncurrenttime_in_seconds() << endl;
+	write_TPV.close();
+}
+//XX-------------------------------------------------------------------------------------------------------------------------------------------XX
+void List :: ConnecttoMatlab()
+{
+	Engine *ep;
+	ep = engOpen(NULL);
+	if (ep == NULL)
+	{
+		cout << "Error: Not Found" << endl;
+		exit(1);
+	}
+	vector<double> store_TPV;
+	vector<double> store_time;
+	ifstream read_TPV_sec;				//read total portfolio value in seconds
+	string item;
+	double TPV;
+	double st;
+	read_TPV_sec.open("Total_portfolio_Value_in_Sec_for_Matlab.txt");
+	getline(read_TPV_sec, item);			//ignore the first line,contain column names
+	while (read_TPV_sec>>TPV>>st)
+	{
+		store_TPV.push_back(TPV);
+		store_time.push_back(st);
+	}
+	int time_Size = store_time.size();
+	int value_Size = store_TPV.size();
+	double *time_Array = new double[time_Size];
+	double *value_Array = new double[value_Size];
+
+	for (int i = 0; i < store_time.size(); i++) {
+		time_Array[i] = store_time[i];
+		value_Array[i] = store_TPV[i];
+	}
+
+	mxArray *time;
+	time = mxCreateDoubleMatrix(1, store_time.size(), mxREAL);
+	memcpy((void*)mxGetPr(time), (void *)time_Array, sizeof(double) * store_time.size());	//size of time and value would be same. 
+	mxArray *value;
+	value = mxCreateDoubleMatrix(1, store_time.size(), mxREAL);
+	memcpy((void*)mxGetPr(value), (void *)value_Array, sizeof(double) * store_time.size());
+
+	engPutVariable(ep, "time", time);
+	engPutVariable(ep, "value", value);
+	engEvalString(ep, "plot(value,time)");
+
+	system("pause");
+
+	mxDestroyArray(time);
+	engEvalString(ep, "close;");
+
+	engClose(ep);
+
+}
+//XX-------------------------------------------------------------------------------------------------------------------------------------XX
+void List::update_transaction_on_account_stockinfo(int ch, double money)
+{
+		int choice = ch;
+		ofstream write_trans;
+		write_trans.open("Bank_Account_History.txt", ios::app);			//append and add at the end
+		if (choice == 1)						//share was bought
+		{
+			write_trans << "BUYShare" << "	" << money << "		" << returncurrenttime() << "	" << getCashBalance() << endl;
+			write_trans.close();
+		}
+		else
+		{
+			write_trans << "SELLShare" << "	" << money << "		" << returncurrenttime()<< "	" << getCashBalance() << endl;
+			write_trans.close();
+		}
+}
+//XX-------------------------------------------------------------------------------------------------------------------------------------XX
+void List::read_stock_transaction_history()
+{
+	ifstream read_bank;
+	string item;
+	read_bank.open("stock_transaction_history.txt");
+	while (getline(read_bank, item))
+	{
+		cout << item << endl;
+	}
+	read_bank.close();
 }

@@ -1,13 +1,2 @@
 Event	CompSymbol	Number	PricePerShare	TotalValue	Date&Time
-Buy	GOOG		1	569.964		569.964		Sun Dec  2 02:10:45 2018
-
-Buy	GOOG		1	569.964		569.964		Sun Dec  2 02:10:45 2018
-
-Buy	GOOG		1	569.964		569.964		Sun Dec  2 02:10:50 2018
-
-Buy	GOOG		1	569.964		569.964		Sun Dec  2 02:10:50 2018
-
-Buy	GOOG		1	569.964		569.964		Sun Dec  2 02:11:29 2018
-
-Buy	GOOG		1	568.964		568.964		Sun Dec  2 02:11:29 2018
 

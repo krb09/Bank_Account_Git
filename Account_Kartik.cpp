@@ -9,10 +9,17 @@ using namespace std;
 //X--------------------------------------------------------------------------------------------------------------------------------------------XX
 Account::Account()
 {
-	setCashBalance();
+	setCashBalance_from_txt();
 }
 //X--------------------------------------------------------------------------------------------------------------------------------------------XX
-void Account::setCashBalance()
+void Account::setCashBalance_new(double money)
+{
+	CashBalance = money;
+}
+
+//X---------------------------------------------------------------------------------------------------------------------------------------------XX
+
+void Account::setCashBalance_from_txt()
 {
 	double CB=-1;								//temporary variable to store Current balance
 	ifstream read_CB;						
@@ -31,14 +38,14 @@ void Account::setCashBalance()
 }
 //X---------------------------------------------------------------------------------------------------------------------------------------------XX
 
-void Account::Update_CashBalance(double CCB)		//update current cashbalance
+void Account::Update_CashBalance_into_txt(double CCB)		//update current cashbalance
 {
 	string item;
 	ofstream write_ccb;
 	write_ccb.open("Current_CashBalance.txt",ios::ate);
 	write_ccb << "CashBalance($)	"<<CCB<<endl;
 	write_ccb.close();
-	this->setCashBalance();								//after you update, set the cashbalance for the object
+	this->setCashBalance_from_txt();								//after you update, set the cashbalance for the object
 }
 double Account::getCashBalance() const
 {

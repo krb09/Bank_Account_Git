@@ -1,14 +1,9 @@
 ﻿  pch.cpp
   Account_Kartik.cpp
-  FinalProject_Kartik.cpp
   Stock_portfolio_List.cpp
-c:\users\kartik rattan\source\repos\finalproject_kartik\finalproject_kartik\stock_portfolio_list.cpp(140): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\kartik rattan\source\repos\finalproject_kartik\finalproject_kartik\stock_portfolio_list.cpp(147): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\kartik rattan\source\repos\finalproject_kartik\finalproject_kartik\stock_portfolio_list.cpp(152): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\kartik rattan\source\repos\finalproject_kartik\finalproject_kartik\stock_portfolio_list.cpp(159): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\kartik rattan\source\repos\finalproject_kartik\finalproject_kartik\stock_portfolio_list.cpp(310): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
   Stock_portfolio_ListNode_Kartik.cpp
   Generating Code...
-c:\users\kartik rattan\source\repos\finalproject_kartik\finalproject_kartik\stock_portfolio_list.cpp(398): warning C4715: 'List::return_numberofshares_from_LinkedList': not all control paths return a value
-c:\users\kartik rattan\source\repos\finalproject_kartik\finalproject_kartik\stock_portfolio_list.cpp(415): warning C4715: 'List::return_share_per_price_from_LinkedList': not all control paths return a value
-  FinalProject_Kartik.vcxproj -> C:\Users\Kartik Rattan\source\repos\FinalProject_Kartik\Debug\FinalProject_Kartik.exe
+c:\users\kartik rattan\source\repos\finalproject_kartik\finalproject_kartik\stock_portfolio_list.cpp(405): warning C4715: 'List::return_numberofshares_from_LinkedList': not all control paths return a value
+c:\users\kartik rattan\source\repos\finalproject_kartik\finalproject_kartik\stock_portfolio_list.cpp(422): warning C4715: 'List::return_share_per_price_from_LinkedList': not all control paths return a value
+  FinalProject_Kartik.cpp
+LINK : fatal error LNK1104: cannot open file 'libmx.lib'
