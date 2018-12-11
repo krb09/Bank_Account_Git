@@ -1,10 +1,12 @@
 Event	CompSymbol	Number	PricePerShare	TotalValue	Date&Time
 
-Buy	GOOG		1	579.964		579.964		Tue Dec  4 12:00:08 2018
+Buy	GOOG		2	569.964		1139.93		Wed Dec  5 10:55:54 2018
 
-Buy	YHOO		5	16.38		81.9		Tue Dec  4 12:00:38 2018
+Buy	AMZN		10	129.66		1296.6		Wed Dec  5 10:56:29 2018
 
-Sell	YHOO		5	16.38		81.9		Tue Dec  4 12:01:07 2018
+Sell	AMZN		5	129.66		1296.6		Thu Dec  6 11:34:52 2018
 
-Sell	GOOG		1	568.964		568.964		Tue Dec  4 12:02:28 2018
+Buy	GOOG		2	579.964		579.964		Mon Dec 10 11:20:46 2018
+
+Sell	GOOG		2	569.964		2279.86		Mon Dec 10 11:21:30 2018
 

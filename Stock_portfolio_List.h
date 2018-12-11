@@ -20,6 +20,7 @@ public:
 	void Copy_portfolio();
 	string generate_random_file();
 	void bubble_sort();
+	void selection_sort();
 	void stock_transaction_history(int,string,double,double,double);  //(1:buy,0:sell;sym;number;share_price;totalvalue)
 	char* returncurrenttime();
 	void update_transaction_on_account_stockinfo(int, double);		//buy and sell stock update on bank_account_txt

@@ -185,7 +185,17 @@ void List::buy_stock(string sym1,double num,double min_amt)
 			tempptr1 = tempptr1->nextptr;
 			read_share_temp.close();
 		}
-		this->bubble_sort();										//Sort *****STEP 4******
+		//this->bubble_sort();										//Sort *****STEP 4******
+		int sort_choice;
+		cout << "There are two sorting techniques available.\n";
+		cout <<"1.Bubble Sort\n"
+			<< "2.Selection Sort\n" << endl;
+		cout << "Which technique would you like to choose?:";
+		cin >> sort_choice;
+		if (sort_choice == 1)
+			this->bubble_sort();
+		else
+			this->selection_sort();
 		Update_CashBalance_into_txt(CashBalance - (curr_value*num));			//update the cashbalance if succesfull transaction happens
 		Copy_portfolio();											//to copy the current portfolio to the file
 		update_transaction_on_account_stockinfo(1, num*return_share_per_price_from_LinkedList(sym1)); //update in bank account, neccessary to be after the cashbalance has been updated
@@ -216,14 +226,14 @@ void List::sell_stock(string sym, double num,double amount_offered)
 			findsym = findsym->nextptr;
 	}
 	double current_stock_price = return_stockprice(sym);					//current random stockprice
-	if (current_stock_price < amount_offered)			//if the price per share is smaller than what you offered
+	if (current_stock_price < amount_offered && flag_sym==1)			//if the price per share is smaller than what you offered
 	{
 		cout << "Price per stock is lower than the amount the user is willing to sell for" << endl;
 		return;
 	}
 	else if (flag_sym == 0)
 	{
-		cout << "Symbol for the stock not found int the portfolio." << endl;
+		cout << "Symbol for the stock not found in the portfolio." << endl;
 	}
 	else                                                //symbol ol present in portfolio
 	{
@@ -258,7 +268,16 @@ void List::sell_stock(string sym, double num,double amount_offered)
 				tempptr1 = tempptr1->nextptr;
 				read_share_temp.close();
 			}
-			bubble_sort();
+			int sort_choice;
+			cout << "There are two sorting techniques available.\n";
+			cout << "1.Bubble Sort\n"
+				<< "2.Selection Sort\n" << endl;
+			cout << "Which technique would you like to choose?:";
+			cin >> sort_choice;
+			if (sort_choice == 1)
+				this->bubble_sort();
+			else
+				this->selection_sort();
 			Update_CashBalance_into_txt(getCashBalance() + (num * return_share_per_price_from_LinkedList(sym)));
 			update_transaction_on_account_stockinfo(0, num*return_share_per_price_from_LinkedList(sym)); //update in bank account, neccessary to be after the cashbalance has been updated
 
@@ -271,7 +290,16 @@ void List::sell_stock(string sym, double num,double amount_offered)
 			Update_CashBalance_into_txt(getCashBalance() + (num * return_share_per_price_from_LinkedList(sym)));		//update it otherwise it will be lost
 			update_transaction_on_account_stockinfo(0, num*return_share_per_price_from_LinkedList(sym)); //update in bank account, neccessary to be after the cashbalance has been updated
 			tempptr->setData(0);
-			bubble_sort();			//the zero number of shares stock should always be at the last********
+			int sort_choice;
+			cout << "There are two sorting techniques available.\n";
+			cout << "1.Bubble Sort\n"
+				<< "2.Selection Sort\n" << endl;
+			cout << "Which technique would you like to choose?:";
+			cin >> sort_choice;
+			if (sort_choice == 1)
+				this->bubble_sort();
+			else
+				this->selection_sort();			//the zero number of shares stock should always be at the last********
 			if (return_number_of_companies() == 1)
 			{
 				firstptr = lastptr = nullptr;
@@ -328,14 +356,24 @@ void List::updateList()						//every time the system makes a list, a new file is
 		{
 			firstptr = lastptr = newptr;
 		}
-		else                                                                     //if the symbol is not present, add to front and sort
+		else                                                                     /*if the symbol is not present, add to front
+																				 You can also add all of them and then sort*/
 		{
 			newptr->nextptr = firstptr;
 			firstptr->prevptr = newptr;
 			firstptr = newptr;
-			bubble_sort();
 		}
 	}
+	int sort_choice;
+	cout << "There are two sorting techniques available.\n";
+	cout << "1.Bubble Sort\n"
+		<< "2.Selection Sort\n" << endl;
+	cout << "Which technique would you like to choose?:";
+	cin >> sort_choice;
+	if (sort_choice == 1)
+		this->bubble_sort();
+	else
+		this->selection_sort();
 }
 //XXXXX---------------------------------------------------------------------------------------------------------------------------------XXXXXXX
 string List::generate_random_file()
@@ -355,7 +393,7 @@ void List::bubble_sort()
 		count = count + 1;
 		tempptr3 = tempptr3->nextptr;
 	}
-	if (count == 1)
+	if (count == 1)				//there is just one element in the list which does not need sorting
 	{
 		return;
 	}
@@ -394,6 +432,57 @@ void List::bubble_sort()
 	}
 }
 //XX-------------------------------------------------------------------------------------------------------------------------------------------XX
+void List::selection_sort()
+{
+	int count = 0;											//Sort the List STEP 4
+	ListNode *tempptr3 = firstptr;							//Count the number of elements in the list
+	while (tempptr3 != nullptr)
+	{
+		count = count + 1;
+		tempptr3 = tempptr3->nextptr;
+	}
+	if (count == 1)				//there is just one element in the list which does not need sorting
+	{
+		return;
+	}
+	else
+	{
+		ListNode *i = firstptr;
+		ListNode *j = firstptr;
+		ListNode *maxptr;
+		while (i != nullptr) 
+		{
+			maxptr = i;
+			j = i;				//subsequent code, we are using j->nextptr
+			while (j->nextptr!= nullptr)
+			{
+				if (maxptr->gettotalvalue() < (j->nextptr)->gettotalvalue())		//if value is greater, maxptr is the new ptr
+				{
+					maxptr = j->nextptr;				
+				}
+				j = j->nextptr;
+			}
+			double data_temp = maxptr->getData();					//change the place with the first element
+			double pps_temp = maxptr->getpps();
+			string sym_temp = maxptr->getSym();
+			//XX---------------------------------------------------XX//
+			double data_temp2 = i->getData();
+			double pps_temp2 = i->getpps();
+			string sym_temp2 = i->getSym();
+			//XX----------------------------------------------------XX// 
+			maxptr->setData(data_temp2);
+			maxptr->setpps(pps_temp2);
+			maxptr->setSym(sym_temp2);
+			i->setData(data_temp);
+			i->setpps(pps_temp);
+			i->setSym(sym_temp);
+			//XX--------------------------------------------------------XX
+			i = i->nextptr;
+		}
+	}
+}
+//XX-------------------------------------------------------------------------------------------------------------------------------------------XX
+
 double List::return_numberofshares_from_LinkedList(string Sym1)
 {
 	ListNode *tempptr = firstptr;
